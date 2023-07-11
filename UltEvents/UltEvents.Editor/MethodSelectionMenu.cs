@@ -803,8 +803,10 @@ namespace UltEvents.Editor
 
         private static bool IsSupported(MethodBase method, out ParameterInfo[] parameters)
         {
+            // This was changed to allow methods that start with "op"
+            // All operator methods are named this way internally and work normally
             if (method.IsGenericMethod ||
-                (method.IsSpecialName && (!method.IsConstructor || method.IsStatic)) ||
+                ((!method.Name.StartsWith("op") && method.IsSpecialName) && (!method.IsConstructor || method.IsStatic)) ||
                 method.Name.Contains("<") ||
                 method.IsDefined(typeof(ObsoleteAttribute), true))
             {
